@@ -385,10 +385,10 @@ def load_tokenizer_and_model(
         model_dir: str,
         peft_config: Optional[PeftConfig] = None,
 ) -> tuple[PreTrainedTokenizer, nn.Module]:
-    tokenizer = AutoTokenizer.from_pretrained(model_dir, trust_remote_code=True)
+    tokenizer = AutoTokenizer.from_pretrained(model_dir, trust_remote_code=True, revision='b098244')
     if peft_config is not None:
         if peft_config.peft_type.name == "PREFIX_TUNING":
-            config = AutoConfig.from_pretrained(model_dir, trust_remote_code=True)
+            config = AutoConfig.from_pretrained(model_dir, trust_remote_code=True, revision='b098244')
             config.pre_seq_len = peft_config.num_virtual_tokens
             config.use_cache = False
             model = AutoModelForCausalLM.from_pretrained(
@@ -401,7 +401,8 @@ def load_tokenizer_and_model(
                 model_dir,
                 trust_remote_code=True,
                 empty_init=False,
-                use_cache=False
+                use_cache=False,
+                revision='b098244'
             )
             model = get_peft_model(model, peft_config)
             model.print_trainable_parameters()
@@ -410,7 +411,8 @@ def load_tokenizer_and_model(
             model_dir,
             trust_remote_code=True,
             empty_init=False,
-            use_cache=False
+            use_cache=False,
+            revision='b098244'
         )
     print_model_size(model)
     return tokenizer, model
